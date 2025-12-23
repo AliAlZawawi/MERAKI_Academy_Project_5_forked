@@ -1,15 +1,14 @@
-const userModel = require("../models/usersSchema");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const register = async (req, res) => {
-  const { firstName, lastName,role, age,  email, password } =
+  const { firstName, lastName,role, age,  email, password , image } =
     req.body;
   const hashpassowrd = await bcrypt.hash(password, 10);
   pool
     .query(
-      `INSERT INTO users (firstName,lastName,role,age,email,password) VALUES ($1,$2,$3,$4,$5,$6)`,
-      [firstName, lastName, role,age, email, hashpassowrd]
+      `INSERT INTO users (firstName,lastName,role,age,email,password,image) VALUES ($1,$2,$3,$4,$5,$6)`,
+      [firstName, lastName, role,age, email, hashpassowrd,image]
     )
     .then((result) => {
       req.status(201).json({
@@ -91,7 +90,26 @@ const userId = req.token.userId;
     })
     .catch((err) => {});
 }
-
+;const updateUserById = async(req, res) => {
+    const {userId} =  req.parms;
+    const { firstName,lastName,age,password, image } = req.body;
+    const hashpassowrd = await bcrypt.hash(password, 10);
+  pool.query(`UPDATE roles SET firstName = $1 WHERE role_id = $2 ` , [newRole , roleId])
+    .then((result) => {
+      res.status(201).json({
+        success: true,
+        message: `Role created`,
+        role: result,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        success: false,
+        message: `Server Error`,
+        err: err.message,
+      });
+    });
+};
 
 module.exports = {
   register,
