@@ -1,4 +1,4 @@
-const { pool } = require("../Models/db");
+const { pool } = require("../models/db");
 
 
 
