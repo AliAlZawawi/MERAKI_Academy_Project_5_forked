@@ -3,6 +3,20 @@ const app = express();
 const PORT = 5000;
 require("dotenv").config();
 
+
+
+const lessonsRouter=require("./Routers/lessons")
+
+app.use(express.json());
+
+
+
+
+app.use("/lessons", lessonsRouter)
+
+
+
+
 const { pool } = require("./models/db");
 
 const rolesRouter = require("./routers/role");
