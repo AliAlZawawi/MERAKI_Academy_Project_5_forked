@@ -1,11 +1,6 @@
 import React from 'react'
-
 import "./Home.css";
 import Navbar from './navbar';
-
-
-
-
  const Home = () => {
   return (
     <div className="home">
@@ -20,8 +15,6 @@ import Navbar from './navbar';
     <img src="https://www.21kschool.com/pk/wp-content/uploads/sites/17/2025/03/Education-Empowers-Life-of-Every-Students.png"  />
     </div>
     </section>
-
-
     <section className='cards'>
         <div className='card'>
             <h3>hello</h3>
