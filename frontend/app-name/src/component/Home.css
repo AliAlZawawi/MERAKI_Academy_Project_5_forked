@@ -1,16 +1,13 @@
 * {
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
-}
-
-.home {
   background: #f7f9fc;
-  min-height: 100vh;
+  font-family: Arial, sans-serif;
 }
 
 
 .hero {
   display: flex;
+  flex-direction: column;
+  gap: 20px;
   align-items: center;
   justify-content: space-around;
   padding: 60px;
