@@ -18,10 +18,23 @@ const Navbar = () => {
         }}>About us</li>
         <li>Favourite</li>
         <li>Courses</li>
+
+      </ul>
+      <div className="nav-buttons">
+       <button onClick={() => {
+            navigate("/login")
+        }}>login</button>
+       <button onClick={() => {
+            navigate("/register")
+        }}>Register</button>
+      </div>
+    </div>
+
       </ul></Col>
         <Col md={3} ><Button className="btn-btn">login</Button> <Button className="btn-btn1">Guest</Button></Col>
       </Row>
     </Container>
+ 
   );
 };
 
