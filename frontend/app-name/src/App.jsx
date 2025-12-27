@@ -4,8 +4,12 @@ import "./App.css";
 import { Routes, Route, Link } from "react-router-dom";
 import Home from "./component/home";
 import About from "./component/About";
+
 import Rigester from "./component/Register";
 import Login from "./component/Login";
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 const App = () => {
   return (
