@@ -13,6 +13,7 @@ import Unauthorized from "./component/Unauthorized";
 import Courses from "./component/Courses";
 import CoursesDetails from "./component/CoursesDetails";
 import Navbar from "./component/navbar";
+import Footer from "./component/Footer ";
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
         <Route path="/register" element={<Rigester />} />
         <Route path="/login" element={<Login />} />
       </Routes>
+      <Footer/>
     </div>
   );
 };
