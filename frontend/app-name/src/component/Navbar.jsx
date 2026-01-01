@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./Navbar.css";
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Button } from "react-bootstrap";
+import Search from "./Search";
 
 
 const Navbar = () => {
@@ -49,15 +50,7 @@ const Navbar = () => {
               Courses
             </li>
             <li>
-              <form className="search-wrapper" onSubmit={(e) => {
-                e.preventDefault();
-                console.log("Search submitted");
-              }}>
-                <input type="text" placeholder="Search" />
-                <button type="submit" className="search-btn">
-                  🔍
-                </button>
-              </form>
+              <Search/>
             </li>
           </ul>
         </div>
