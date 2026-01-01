@@ -17,6 +17,7 @@ import Profile from "./component/Profile";
 
 import Footer from "./component/Footer ";
 import Page404 from "./component/Page404";
+import Search from "./component/Search"
 
 
 const App = () => {
@@ -33,6 +34,7 @@ const App = () => {
         <Route path="/register" element={<Rigester />} />
         <Route path="/login" element={<Login />} />
         <Route path="/*" element={<Page404/>}/>
+        <Route path="/search" element={<Search/>}/>
       </Routes>
       <Footer/>
     </div>
