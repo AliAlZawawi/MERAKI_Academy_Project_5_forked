@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Navbar.css";
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Button } from "react-bootstrap";
 
+
 const Navbar = () => {
+  const [searchValue, setsearchValue] = useState("");
   const navigate = useNavigate();
   return (
     <div className="all">
@@ -57,6 +59,20 @@ const Navbar = () => {
                 </button>
               </form>
             </li>
+
+           <li>
+  <form className="search-wrapper" onSubmit={(e) => {
+    e.preventDefault();
+    
+  }}>
+    <input type="text" placeholder="Search" onChange={(e)=>{
+      setsearchValue(e.target.value)
+    }}/>
+    <button type="submit" className="search-btn" >
+      🔍
+    </button>
+  </form>
+</li>
 
           </ul>
         </div>
