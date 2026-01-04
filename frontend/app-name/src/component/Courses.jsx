@@ -63,7 +63,7 @@ const Courses = () => {
                 {course.lessons} Lessons • {course.students} Students
               </p>
               <div className="bottom">
-                <span className="price">${course.price}</span>
+                <span className="price">${course.price}</span> <button >❤️</button>
               </div>
             </div>
           ))}
