@@ -30,7 +30,7 @@ const Navbar = () => {
     <div className="all">
       <div className="bb">
         <a href="#" className="logo">
-          <img  src="/images/p1.png" ></img>
+          <img src="/images/p1.png" ></img>
         </a>
 
         <ul className="nav-links">
@@ -55,15 +55,22 @@ const Navbar = () => {
 
         <div className="auth-buttons">
           {isLoggedIn ? (
-            <Button variant="danger" onClick={handleLogout}>
-              Logout  <GrLogout />
+            <div class="dropdown">
+              <button class="dropbtn">Dropdown Menu</button>
 
-            </Button>
+              <div class="dropdown-content">
+                <Button variant="danger" onClick={handleLogout}>
+                  Logout  <GrLogout />
+
+                </Button>     <a href="/Dashboard">Admin Dashboard</a>
+              </div>
+            </div>
+
           ) : (
             <>
               <Button className="btn-btn" onClick={() => navigate("/login")}>Login <TbLogin /></Button>
               <Button className="btn-btn1" onClick={() => navigate("/register")}>Register <FaRegIdCard />
-</Button>
+              </Button>
             </>
           )}
         </div>
