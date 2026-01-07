@@ -1,78 +1,71 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
-import {
-  removeFromFavourite,
-  setFavourite
-} from "../redux/favouriteSlice";
+import { addToFavourite, removeFromFavourite, setFavourite } from "../redux/favouriteSlice";
+import "./Favourite.css";
 
 function Favourite() {
   const dispatch = useDispatch();
-  const favouriteCourses = useSelector(
-    (state) => state.favourite.items
-  );
+  const favouriteCourses = useSelector((state) => state.favourite.items);
 
   useEffect(() => {
     axios
       .get("http://localhost:5000/favourite", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       })
-      .then((res) => {
-        dispatch(setFavourite(res.data));
-      })
+      .then((res) => dispatch(setFavourite(res.data)))
       .catch((err) => console.log(err));
   }, [dispatch]);
 
-  const handleRemove = (courseId) => {
-    axios
-      .delete(`http://localhost:5000/favourite/${courseId}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
-      .then(() => {
-        dispatch(removeFromFavourite(courseId));
-      })
-      .catch((err) => console.log(err));
+  const handleToggleFavourite = (course) => {
+    const exists = favouriteCourses.find((c) => c.id === course.id);
+
+    if (exists) {
+      axios
+        .delete(`http://localhost:5000/favourite/${course.id}`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        })
+        .then(() => dispatch(removeFromFavourite(course.id)))
+        .catch((err) => console.log(err));
+    } else {
+      axios
+        .post(
+          "http://localhost:5000/favourite",
+          { courseId: course.id },
+          { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+        )
+        .then(() => dispatch(addToFavourite(course)))
+        .catch((err) => console.log(err));
+    }
   };
 
   return (
     <div className="unauth-wrapper">
-      {favouriteCourses.length === 0 ? (
-        <div className="unauth-card">
-          <div className="browser-bar">
-            <span></span>
-            <span></span>
-            <span></span>
+      <div className="unauth-grid">
+        {favouriteCourses.length === 0 ? (
+          <div className="unauth-card">
+            <h3>Favourite Courses ❤️</h3>
+            <p>No favourite courses yet</p>
           </div>
-          <div className="unauth-content">
-            <h1>Favourite Courses ❤️</h1>
-            <h2>No favourite courses yet</h2>
-          </div>
-        </div>
-      ) : (
-        <div className="unauth-grid">
-          {favouriteCourses.map((course) => (
+        ) : (
+          favouriteCourses.map((course) => (
             <div className="unauth-card" key={course.id}>
               <img src={course.image} alt={course.title} />
               <h3>{course.title}</h3>
               <p>{course.description}</p>
-
               <div className="unauth-bottom">
                 <span className="price">${course.price}</span>
                 <button
                   className="remove-btn"
-                  onClick={() => handleRemove(course.id)}
+                  onClick={() => handleToggleFavourite(course)}
                 >
-                  Remove ❌
+                  Remove
                 </button>
               </div>
             </div>
-          ))}
-        </div>
-      )}
+          ))
+        )}
+      </div>
     </div>
   );
 }

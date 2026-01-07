@@ -6,13 +6,14 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setCourses } from "../redux/coursesSlice";
 import { setCourseId } from "../redux/courseDetailsSlice";
-import { FcLike } from "react-icons/fc";
-import { addToFavourite } from "../redux/favouriteSlice";
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+import { addToFavourite, removeFromFavourite } from "../redux/favouriteSlice";
 
 const Courses = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const courses = useSelector((state) => state.courses.courses);
+  const favouriteCourses = useSelector((state) => state.favourite.items);
 
   useEffect(() => {
     axios
@@ -27,21 +28,26 @@ const Courses = () => {
       .catch((err) => console.log(err));
   }, [dispatch]);
 
-  const handleAddFavourite = (course) => {
-    axios
-      .post(
-        "http://localhost:5000/favourite",
-        { courseId: course.id },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      )
-      .then(() => {
-        dispatch(addToFavourite(course));
-      })
-      .catch((err) => console.log(err));
+  const handleToggleFavourite = (course) => {
+    const exists = favouriteCourses.find((c) => c.id === course.id);
+
+    if (exists) {
+      axios
+        .delete(`http://localhost:5000/favourite/${course.id}`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        })
+        .then(() => dispatch(removeFromFavourite(course.id)))
+        .catch((err) => console.log(err));
+    } else {
+      axios
+        .post(
+          "http://localhost:5000/favourite",
+          { courseId: course.id },
+          { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+        )
+        .then(() => dispatch(addToFavourite(course)))
+        .catch((err) => console.log(err));
+    }
   };
 
   return (
@@ -61,32 +67,39 @@ const Courses = () => {
         </div>
 
         <div className="courses-grid">
-          {courses.map((course) => (
-            <div className="course-card" key={course.id}>
-              <img
-                src={course.image}
-                alt={course.title}
-                onClick={() => {
-                  dispatch(setCourseId(course.id));
-                  navigate("/courseDetails");
-                }}
-              />
+          {courses.map((course) => {
+            const isFavourite = favouriteCourses.some((c) => c.id === course.id);
+            return (
+              <div className="course-card" key={course.id}>
+                <img
+                  src={course.image}
+                  alt={course.title}
+                  onClick={() => {
+                    dispatch(setCourseId(course.id));
+                    navigate("/courseDetails");
+                  }}
+                />
 
-              <h3>{course.title}</h3>
+                <h3>{course.title}</h3>
 
-              <p>
-                {course.lessons} Lessons • {course.students} Students
-              </p>
+                <p>
+                  {course.lessons} Lessons • {course.students} Students
+                </p>
 
-              <div className="bottom">
-                <span className="price">${course.price}</span>
+                <div className="bottom">
+                  <span className="price">${course.price}</span>
 
-                <button onClick={() => handleAddFavourite(course)}>
-                  <FcLike />
-                </button>
+                  <button onClick={() => handleToggleFavourite(course)}>
+  {isFavourite ? (
+   <AiFillHeart style={{ color: "red", fontSize: "24px" }} />
+  ) : (
+       <AiOutlineHeart style={{ color: "black", fontSize: "24px" }} />
+  )}
+</button>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         <button className="load-more">Load More</button>
