@@ -21,6 +21,7 @@ const Lesson = () => {
       .catch((err) => console.log(err));
   }, [courseId]);
   return (
+    
      <div className="lessons-wrapper">
       {lessons.length === 0 ? (
         <p>No lessons available</p>

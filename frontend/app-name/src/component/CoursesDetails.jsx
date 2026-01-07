@@ -144,6 +144,22 @@ const CourseDetails = () => {
       </div>
 
       <div className="course-content">
+         {user && (
+  <div className="instructor-bar">
+    <img
+      src={user.image}
+      alt="Instructor"
+      className="instructor-img"
+    />
+
+    <div className="instructor-info">
+      <h3>
+        {user.firstName} {user.lastName}
+      </h3>
+      <p>Course Instructor</p>
+    </div>
+  </div>
+)}
         <div className="lessons">
           <h3>Course Outline</h3>
 
@@ -152,15 +168,7 @@ const CourseDetails = () => {
           </div>
         </div>
 
-        {user && (
-          <div className="instructor">
-            <img src={user.image} alt="instructor" />
-            <h4>
-              {user.firstName} {user.lastName}
-            </h4>
-            <p>Instructor</p>
-          </div>
-        )}
+        
       </div>
     </div>
   );
