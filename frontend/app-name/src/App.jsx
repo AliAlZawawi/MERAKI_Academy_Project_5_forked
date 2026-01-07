@@ -18,8 +18,10 @@ import Favourite from "./component/Favourite";
 import Search from "./component/Search";
 import Lesson from "./component/Lesson";
 import UpdateCourses from "./component/UpdateCourses";
-import Dashboard from "./component/Dashboard"
-import Student from "./component/Studant"
+import Dashboard from "./component/Dashboard";
+import Student from "./component/Studant";
+import ChatPage from "./Chatpage";
+
 const App = () => {
   return (
     <div>
@@ -38,8 +40,9 @@ const App = () => {
         <Route path="/favourite" element={<Favourite />} />{" "}
         <Route path="/search" element={<Search />} />
         <Route path="/updatecourses" element={<UpdateCourses />} />
-        <Route path="/dashboard" element={<Dashboard/>}/>
-        <Route path="/student" element={<Student/>}/>
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/student" element={<Student />} />
+        <Route path="/message" element={<ChatPage />} />{" "}
       </Routes>
       <Footer />
     </div>

@@ -54,7 +54,9 @@ const Navbar = () => {
               </li>
             </>
           )}
-
+          <li onClick={() => navigate("/message")}>
+            Chat <CgFileDocument />
+          </li>
           <li>
             <Search />
           </li>
@@ -93,10 +95,7 @@ const Navbar = () => {
             </div>
           ) : (
             <>
-              <Button
-                className="btn-btn"
-                onClick={() => navigate("/login")}
-              >
+              <Button className="btn-btn" onClick={() => navigate("/login")}>
                 Login <TbLogin />
               </Button>
 
