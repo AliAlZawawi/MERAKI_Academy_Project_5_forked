@@ -32,39 +32,18 @@ const io = socket(server, {
   cors: { origin: "*" },
 });
 
-const clients = {};
-
-const users = io.of("/users");
-const admin = io.of("/admin");
-
 io.use(auth);
-users.use(auth);
-admin.use(auth);
-
-users.on("connection", (socket) => {
-  console.log("Connected to /users namespace");
-});
-
-admin.on("connection", (socket) => {
-  console.log("Connected to /admin namespace");
-});
 
 io.on("connection", (socket) => {
-  socket.use(socketMdware);
-
-  const user_id = socket.handshake.headers.user_id;
-  clients[user_id] = { socket_id: socket.id, user_id };
+  console.log("✅ connected:", socket.user.user_id);
 
   messageHandler(socket, io);
 
   socket.on("disconnect", () => {
-    for (const key in clients) {
-      if (clients[key].socket_id === socket.id) {
-        delete clients[key];
-      }
-    }
+    console.log("❌ disconnected:", socket.user.user_id);
   });
 });
+
 
 // ================= START SERVER =================
 
