@@ -173,7 +173,22 @@ const getCoursesBystudentId = (req, res) => {
 
   id = req.params.id;
   pool
-    .query(`SELECT * FROM students_courses WHERE student =$1`, [id])
+    .query(
+      `SELECT
+  u.id AS student_id,
+  u.firstName,
+  u.lastName,
+  c.id AS course_id,
+  c.title,
+  c.category,
+  c.price,
+  c.image
+FROM students_courses sc
+JOIN users u ON sc.student = u.id
+JOIN courses c ON sc.course = c.id
+WHERE u.id = $1 `,
+      [id]
+    )
     .then((result) => {
       res.status(200).json({
         success: true,
@@ -205,6 +220,34 @@ const addCourseToStudent = (req, res) => {
       console.log(err);
     });
 };
+
+const getStudents = (req, res) => {
+  console.log("hi");
+  pool
+    .query(
+      `SELECT
+  c.id,
+  c.title,
+  COUNT(sc.student) AS totalstudents
+FROM courses c
+LEFT JOIN students_courses sc ON c.id = sc.course
+GROUP BY c.id; `
+    )
+    .then((result) => {
+      res.status(200).json({
+        success: true,
+        students: result.rows,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        success: false,
+        message: "Server error",
+        err: err.message,
+      });
+    });
+};
+
 module.exports = {
   createNewCourse,
   getAllcourses,
@@ -214,4 +257,6 @@ module.exports = {
   getCoursesByInstructorId,
   getCoursesBystudentId,
   addCourseToStudent
+  getStudents,
+ 
 };
