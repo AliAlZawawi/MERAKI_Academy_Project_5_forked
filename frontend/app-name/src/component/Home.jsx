@@ -24,7 +24,6 @@ const Home = () => {
         },
       })
       .then((result) => {
-        console.log(result.data.allcourses);
         dispatch(setCourses(result.data.allcourses));
       })
       .catch((err) => {
@@ -32,14 +31,12 @@ const Home = () => {
       });
   };
   const courses = useSelector((state) => state.courses.courses);
-  console.log(courses);
   const latestCourses = [];
   courses.forEach((course, index) => {
     if (courses.length - index <= 3) {
       latestCourses.push(course);
     }
   });
-  console.log(latestCourses);
   useEffect(() => {
     getAllCourses();
   }, []);

@@ -103,7 +103,6 @@ const CourseDetails = () => {
       getUserById(course.instructorid);
       getLessonsByCourseId(course.id);
 
-      // تحقق من اكتمال الكورس
       axios
         .get(`http://localhost:5000/lessons/isCompleted/${course.id}`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -207,7 +206,6 @@ console.log(courseId);
               </button>
             </div>  
             </div>
-          </div>
         )}
       </div>
 
@@ -219,11 +217,10 @@ console.log(courseId);
             <Lesson />
           </div>
 
-          {/* زر يظهر فقط إذا كل الدروس مكتملة */}
           {allCompleted && (
             <button
               className="completed-btn"
-              onClick={() => navigate("/completed")}
+              onClick={() => navigate(`/completed/${courseId}`)}
             >
               Go to Completed Page
             </button>

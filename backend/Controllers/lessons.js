@@ -199,7 +199,7 @@ const getCertificate = (req, res) => {
       }
 
       const data = await pool.query(
-        `SELECT title AS courseName FROM courses WHERE id=$1`,
+        `SELECT * FROM courses WHERE id=$1`,
         [courseId]
       );
 
