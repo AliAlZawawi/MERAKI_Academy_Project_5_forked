@@ -5,15 +5,22 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import Profile from "./Profile";
+import { setUserId } from "../redux/auth";
 
-import { selectRole, selectIsAdmin, selectIsTeacher } from "../redux/selectors";
+import {
+  selectRole,
+  selectIsAdmin,
+  selectIsTeacher,
+  selectIsStudent,
+} from "../redux/selectors";
 
 const CourseDetails = () => {
   const navigate = useNavigate();
-
+  const userid = useSelector((state) => state.auth.userid);
   const role = useSelector(selectRole);
   const isAdmin = useSelector(selectIsAdmin);
   const isTeacher = useSelector(selectIsTeacher);
+  const isStudent = useSelector(selectIsStudent);
   const courseId = useSelector((state) => state.courseDetails.courseId);
 
   const [course, setCourse] = useState(null);
@@ -113,7 +120,32 @@ const CourseDetails = () => {
     diffDays = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
   }
 
+  const addCourseToStudent = () => {
+    const student = userid;
+    const course = courseId
+    axios
+      .post(
+        `http://localhost:5000/courses/addCourseToStudent`,
+        { student, course },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then((res) => {
+        
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+ 
+
   if (!course) return <p>Loading course...</p>;
+console.log(userid);
+console.log(courseId);
+
 
   return (
     <div className="course-page">
@@ -132,10 +164,10 @@ const CourseDetails = () => {
               <span>⭐ {course.rate}</span>
               <span>$ {course.price}</span>
             </div>
-            
+
             <button className="start-btn">Start Course</button>
 
-            {isAdmin && (
+            {(isAdmin || isTeacher) && (
               <div className="admin-actions">
                 <button
                   className="update-btn"
@@ -146,6 +178,13 @@ const CourseDetails = () => {
 
                 <button className="delete-btn" onClick={deleteCourseById}>
                   Delete
+                </button>
+              </div>
+            )}
+            {isStudent && (
+              <div className="admin-actions">
+                <button className="update-btn" onClick={()=>{addCourseToStudent()}}>
+                  Add Course
                 </button>
               </div>
             )}
@@ -160,13 +199,14 @@ const CourseDetails = () => {
             </h4>
             <span>Course Instructor</span>
             <div>
-               <button
+              <button
                 className="update-btn profile-btn"
                 onClick={() => navigate(`/profile/${user.id}`)}
               >
                 Profile
               </button>
             </div>  
+            </div>
           </div>
         )}
       </div>
