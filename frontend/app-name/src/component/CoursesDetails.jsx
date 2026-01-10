@@ -220,7 +220,6 @@ const CourseDetails = () => {
                 Profile
               </button>
             </div>
-          </div>
         )}
       </div>
 
