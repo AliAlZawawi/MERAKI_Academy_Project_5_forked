@@ -203,6 +203,24 @@ WHERE u.id = $1 `,
       });
     });
 };
+const addCourseToStudent = (req, res) => {
+  const { student, course } = req.body;
+  pool
+    .query(`INSERT INTO students_courses (student,course) VALUES ($1,$2)`, [
+      student,
+      course,
+    ])
+    .then((result) => {
+      res.status(201).json({
+        success: true,
+        message: "course created successfully",
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 const getStudents = (req, res) => {
   console.log("hi");
   pool
@@ -238,5 +256,7 @@ module.exports = {
   updateCourseById,
   getCoursesByInstructorId,
   getCoursesBystudentId,
+  addCourseToStudent
   getStudents,
+ 
 };
